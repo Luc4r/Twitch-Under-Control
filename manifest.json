@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+
+  "name": "Twitch Under Control",
+  "description": "Save separate settings for every twitch channel",
+  "version": "0.1",
+  "permissions": [
+  	"storage",
+    "webNavigation",
+    "tabs"
+  ],
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+
+  "browser_action": {
+    "default_popup": "./index.html",
+    "default_title": "Open settings page"
+  },
+  "background": {
+    "scripts": ["./background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://www.twitch.tv/*", "https://www.twitch.tv/*"],
+      "js": ["./checkForSettings.js"]
+    }
+  ]
+}
