@@ -14,9 +14,6 @@
 # ignore all files starting with .
 .*
 
-# ignore public folder
-/public/
-
 # misc
 .DS_Store
 .env

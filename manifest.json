@@ -10,9 +10,9 @@
     "tabs"
   ],
   "icons": {
-    "16": "logo.png",
-    "48": "logo.png",
-    "128": "logo.png"
+    "16": "logo16.png",
+    "48": "logo48.png",
+    "128": "logo128.png"
   },
 
   "browser_action": {
@@ -25,7 +25,7 @@
   "content_scripts": [
     {
       "matches": ["http://www.twitch.tv/*", "https://www.twitch.tv/*"],
-      "js": ["./checkForSettings.js"]
+      "js": ["./changeVolume.js"]
     }
   ]
 }
