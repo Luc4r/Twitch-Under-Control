@@ -25,7 +25,6 @@ chrome.runtime.onMessage.addListener(path => {
 });
 
 const changeVolumeIfSettingsExist = (path) => { 
-	console.log("Path:", path);		// TESTING - DELETE LATER
 	const player = document.body.querySelector(".video-player video");
 	const volumeSlider = document.body.querySelector(".tw-range");
 	const volumeSliderFill = document.body.querySelector(".tw-range__fill-value");
