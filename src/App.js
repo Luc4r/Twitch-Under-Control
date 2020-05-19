@@ -22,7 +22,7 @@ class App extends Component {
     });
   };
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     saveToChrome("soundSettings", this.state.soundSettings);
   };
 
