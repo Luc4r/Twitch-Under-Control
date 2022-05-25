@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FooterWrapper } from "./Footer.styles";
+import { FooterWrapper } from './Footer.styles';
 
 const Footer = () => {
   return (
