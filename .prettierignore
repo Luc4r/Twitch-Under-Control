@@ -1,0 +1,2 @@
+# here we can add files that shouldn't be prettiered
+!src/**/*.{ts,tsx,js}
