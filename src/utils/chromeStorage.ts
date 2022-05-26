@@ -1,8 +1,11 @@
 import { storage } from '@extend-chrome/storage';
 
+const storageSystem = storage.sync || chrome.storage.sync || localStorage;
+
 const saveToChrome = (key: string, value: any) => {
   try {
-    storage.sync.set({ [key]: value });
+    console.log(key, value);
+    storageSystem.set({ [key]: value });
   } catch (e) {
     console.error(e);
   }
@@ -10,8 +13,9 @@ const saveToChrome = (key: string, value: any) => {
 
 const getFromChrome = async <T>(key: string) => {
   try {
-    const result = await storage.sync.get();
-    return result[key] as T;
+    const data = await storageSystem.get([key]);
+    console.log(data[key]);
+    return data[key] as T;
   } catch (e) {
     console.error(e);
   }
@@ -19,7 +23,7 @@ const getFromChrome = async <T>(key: string) => {
 
 const removeFromChrome = (key: string) => {
   try {
-    storage.sync.remove(key);
+    storageSystem.remove(key);
   } catch (e) {
     console.error(e);
   }

@@ -11,7 +11,7 @@ const TopBarWrapper = styled.div`
 
   .center {
     margin: 10px auto;
-  };
+  }
 `;
 
 export { TopBarWrapper };

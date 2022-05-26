@@ -24,6 +24,7 @@ module.exports = {
     'react-hooks',
     'prettier',
   ],
+  ignorePatterns: ["**/*.js", "**/*.jsx"],
   rules: {
     '@typescript-eslint/no-unused-vars': [
       'warn',

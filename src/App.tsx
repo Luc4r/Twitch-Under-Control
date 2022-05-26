@@ -23,10 +23,12 @@ const App = () => {
     };
 
     fetchData();
-  });
+  }, []);
 
   useEffect(() => {
-    saveToChrome('soundSettings', soundSettings);
+    if (soundSettings) {
+      saveToChrome('soundSettings', soundSettings);
+    }
   }, [soundSettings]);
 
   const getCorrectVolumeNumber = (volume: string) => {

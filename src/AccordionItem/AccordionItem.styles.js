@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const AccordionItemWrapper = styled.div`
   position: relative;
@@ -6,7 +6,7 @@ const AccordionItemWrapper = styled.div`
 
   &:not(:last-of-type) {
     margin-bottom: 4px;
-  };
+  }
 
   .channelButton {
     width: 100%;
@@ -24,15 +24,15 @@ const AccordionItemWrapper = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: ${props => props.active ? "#c9c9c9" : "#696969"};
-  };
+    color: ${(props) => (props.active ? '#c9c9c9' : '#696969')};
+  }
 
   .inner {
     background-color: #393939;
     overflow: hidden;
     transition-duration: 0.3s;
-    height: ${props => props.active ? "70px" : "0px"};
-  };
+    height: ${(props) => (props.active ? '70px' : '0px')};
+  }
 
   .content {
     display: flex;
@@ -41,16 +41,16 @@ const AccordionItemWrapper = styled.div`
     align-items: center;
     padding: 20px;
     transition-duration: 0.3s;
-    opacity: ${props => props.active ? "1" : "0"};
-  };
+    opacity: ${(props) => (props.active ? '1' : '0')};
+  }
 
   &.addAnimation {
-    animation: addItem .5s;
-  };
+    animation: addItem 0.5s;
+  }
 
   &.cancelAddingAnimation {
-    animation: cancelAddingItem .3s;
-  };
+    animation: cancelAddingItem 0.3s;
+  }
 
   @keyframes addItem {
     0% {
@@ -63,7 +63,7 @@ const AccordionItemWrapper = styled.div`
       opacity: 1;
       transform: rotateY(0) scaleY(1);
     }
-  };
+  }
 
   @keyframes removeItemNotActive {
     0% {
@@ -74,7 +74,7 @@ const AccordionItemWrapper = styled.div`
       height: 0px;
       transform: rotateY(-90deg) scaleY(0);
     }
-  };
+  }
 
   @keyframes removeItemActive {
     0% {
@@ -85,7 +85,7 @@ const AccordionItemWrapper = styled.div`
       height: 0px;
       transform: rotateY(-90deg) scaleY(0);
     }
-  };
+  }
 
   @keyframes cancelAddingItem {
     0% {
@@ -98,7 +98,7 @@ const AccordionItemWrapper = styled.div`
       opacity: 0;
       transform: rotateY(-90deg) scaleY(0);
     }
-  };
+  } ;
 `;
 
 const ChannelSettingsLabel = styled.div`
@@ -107,7 +107,7 @@ const ChannelSettingsLabel = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center; 
+  align-items: center;
 `;
 
 const ChannelNameInputWrapper = styled.div`
@@ -118,7 +118,7 @@ const ChannelNameInputWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
 
-  input[type="string"] {
+  input[type='string'] {
     width: 90%;
     text-align: center;
     font-size: 16px;
@@ -126,20 +126,18 @@ const ChannelNameInputWrapper = styled.div`
     background: none;
     outline: none;
     border: none;
-    border-bottom: ${props => props.hasFailed 
-      ? "1px dashed #cf3333" 
-      : "1px dashed #c9c9c9"
-    };
-  };
+    border-bottom: ${(props) =>
+      props.hasFailed ? '1px dashed #cf3333' : '1px dashed #c9c9c9'};
+  }
 `;
 
 const VolumeNumberWrapper = styled.div`
   position: relative;
   display: inline-block;
-  width: ${props => props.addingNew ? "35%" : "15%"};
+  width: ${(props) => (props.addingNew ? '35%' : '15%')};
   margin-top: -0.2em;
 
-  input[type=string] {
+  input[type='string'] {
     width: 80%;
     text-align: center;
     font-size: 20px;
@@ -148,7 +146,7 @@ const VolumeNumberWrapper = styled.div`
     outline: none;
     border: none;
     border-bottom: 1px dashed #c9c9c9;
-  };
+  }
 
   &::after {
     content: '%';
@@ -160,24 +158,28 @@ const VolumeNumberWrapper = styled.div`
     color: #c9c9c9;
     pointer-events: none;
     transform: translateY(-50%);
-  };
+  }
 `;
 
 const VolumeSlider = styled.input`
-  width: ${props => props.addingNew ? "80%" : "60%"};
+  width: ${(props) => (props.addingNew ? '80%' : '60%')};
   height: 15px;
-  border-radius: 5px;  
+  border-radius: 5px;
   -webkit-appearance: none;
   outline: none;
-  background: ${props => props.value > 50
-    ? `linear-gradient(to right, #517edb ${props.value}%, #c9c9c9 ${100 - props.value}%)` 
-    : `linear-gradient(to left, #c9c9c9 ${100 - props.value}%, #517edb ${props.value}%)`
-  };
+  background: ${(props) =>
+    props.value > 50
+      ? `linear-gradient(to right, #517edb ${props.value}%, #c9c9c9 ${
+          100 - props.value
+        }%)`
+      : `linear-gradient(to left, #c9c9c9 ${100 - props.value}%, #517edb ${
+          props.value
+        }%)`};
 
   &::-webkit-slider-thumb {
     width: 25px;
     height: 25px;
-    border-radius: 5px;  
+    border-radius: 5px;
     -webkit-appearance: none;
     background-color: #517edb;
     border: 1px solid #2350a9;
@@ -186,8 +188,8 @@ const VolumeSlider = styled.input`
 
     &:hover {
       background-color: #658fe4;
-    };
-  };
+    }
+  }
 `;
 
 const ErrorMessageDisplayer = styled.i`
@@ -196,11 +198,11 @@ const ErrorMessageDisplayer = styled.i`
   color: #cf3333;
 `;
 
-export { 
-  AccordionItemWrapper, 
+export {
+  AccordionItemWrapper,
   ChannelSettingsLabel,
   ChannelNameInputWrapper,
-  VolumeNumberWrapper, 
+  VolumeNumberWrapper,
   VolumeSlider,
-  ErrorMessageDisplayer
+  ErrorMessageDisplayer,
 };
