@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 
 import {
   AccordionItemWrapper,
@@ -7,6 +7,8 @@ import {
   VolumeNumberWrapper,
   VolumeSlider,
   ErrorMessageDisplayer,
+  AccordionSettingsWrapper,
+  AccordionSettingsContent,
 } from './AccordionItem.styles';
 import { SVGButton } from '../Accordion/Accordion.styles';
 import AddIcon from '../utils/svg/addIcon';
@@ -55,7 +57,7 @@ const AccordionNewSettings = ({
   };
 
   return (
-    <AccordionItemWrapper id="newChannel" active={true}>
+    <AccordionItemWrapper id="newChannel" isActive={true}>
       <ChannelSettingsLabel>
         <ChannelNameInputWrapper hasFailed={!!errorMessage}>
           <input
@@ -76,8 +78,8 @@ const AccordionNewSettings = ({
           <CloseIcon />
         </SVGButton>
       </ChannelSettingsLabel>
-      <div className="inner">
-        <div className="content">
+      <AccordionSettingsWrapper isActive={true}>
+        <AccordionSettingsContent isActive={true}>
           <VolumeSlider
             type="range"
             min="0"
@@ -87,7 +89,7 @@ const AccordionNewSettings = ({
             value={channelVolume}
             onChange={handleChange}
           />
-          <VolumeNumberWrapper addingNew={true}>
+          <VolumeNumberWrapper useSecondaryStyle={true}>
             <input
               type="string"
               id="newChannelVolume"
@@ -95,8 +97,8 @@ const AccordionNewSettings = ({
               onChange={handleChange}
             />
           </VolumeNumberWrapper>
-        </div>
-      </div>
+        </AccordionSettingsContent>
+      </AccordionSettingsWrapper>
     </AccordionItemWrapper>
   );
 };

@@ -1,14 +1,11 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
-import './App.css';
+import { AppWrapper } from './App.styles';
 import TopBar from './TopBar/TopBar';
 import Footer from './Footer/Footer';
 import Accordion from './Accordion/Accordion';
 import { saveToChrome, getFromChrome } from './utils/chromeStorage';
-
-export interface SoundSetting {
-  [key: string]: string;
-}
+import { SoundSetting } from './utils/commonTypes';
 
 const App = () => {
   const [soundSettings, setSoundSettings] = useState<SoundSetting | null>(null);
@@ -24,12 +21,6 @@ const App = () => {
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if (soundSettings) {
-      saveToChrome('soundSettings', soundSettings);
-    }
-  }, [soundSettings]);
 
   const getCorrectVolumeNumber = (volume: string) => {
     const volumeInt = parseInt(volume, 10);
@@ -51,6 +42,7 @@ const App = () => {
 
     newSoundSettings[channelNameToModify] = volumeInt.toString();
     setSoundSettings(newSoundSettings);
+    saveToChrome('soundSettings', newSoundSettings);
   };
 
   const removeChannelSettings = (channelNameToRemove: string) => {
@@ -70,7 +62,7 @@ const App = () => {
   };
 
   return (
-    <div className="App">
+    <AppWrapper>
       <TopBar />
       <Accordion
         items={soundSettings || {}}
@@ -79,7 +71,7 @@ const App = () => {
         removeChannelSettings={removeChannelSettings}
       />
       <Footer />
-    </div>
+    </AppWrapper>
   );
 };
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const FooterWrapper = styled.div`
+export const FooterWrapper = styled.div`
   margin-left: auto;
   margin-right: 4px;
   display: flex;
@@ -11,5 +11,3 @@ const FooterWrapper = styled.div`
     padding: 2px;
   }
 `;
-
-export { FooterWrapper };

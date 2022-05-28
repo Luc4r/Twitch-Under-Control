@@ -1,11 +1,11 @@
-import React, { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 
 import { AccordionWrapper, SVGButton } from './Accordion.styles';
-import { SoundSetting } from '../App';
 import AccordionNewSettings from '../AccordionItem/AccordionNewSettings';
 import AccordionItem from '../AccordionItem/AccordionItem';
 import AddIcon from '../utils/svg/addIcon';
 import scrollToAccordionElement from '../utils/scroll';
+import { SoundSetting } from '../utils/commonTypes';
 
 const ADDING_SETTINGS_INDEX = -1;
 
@@ -28,7 +28,7 @@ const Accordion = ({
   const [newChannelName, setNewChannelName] = useState<string>('');
   const [newChannelVolume, setNewChannelVolume] = useState<string>('');
 
-  const allChannelNames = useMemo(() => items && Object.keys(items), [items]);
+  const allChannelNames = useMemo(() => items ? Object.keys(items) : [], [items]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const type = event.target.id;
@@ -124,7 +124,7 @@ const Accordion = ({
 
   return (
     <AccordionWrapper id="accordion">
-      <React.Fragment>
+      <>
         {allChannelNames &&
           allChannelNames.map((channelName, index) => (
             <AccordionItem
@@ -147,11 +147,11 @@ const Accordion = ({
             handleCancelAddingChannel={handleCancelAddingChannel}
           />
         ) : (
-          <SVGButton center={true} onClick={handleNewChannelSettings}>
+          <SVGButton onClick={handleNewChannelSettings} align="center">
             {<AddIcon />}
           </SVGButton>
         )}
-      </React.Fragment>
+      </>
     </AccordionWrapper>
   );
 };

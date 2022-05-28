@@ -50,6 +50,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'react/prop-types': 'off',
     'react/display-name': 'off',
+    "react/react-in-jsx-scope": "off",
     'jsdoc/check-indentation': 'off',
     'prefer-spread': 'off',
     'prefer-rest-params': 'off',

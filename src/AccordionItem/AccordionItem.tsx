@@ -1,7 +1,11 @@
-import React, { ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
 
 import {
+  AccordionChannelButton,
+  AccordionChannelName,
   AccordionItemWrapper,
+  AccordionSettingsContent,
+  AccordionSettingsWrapper,
   ChannelSettingsLabel,
   VolumeNumberWrapper,
   VolumeSlider,
@@ -31,17 +35,19 @@ const AccordionItem = ({
   const isActive = activeTab === index;
 
   return (
-    <AccordionItemWrapper id={`channel${index}`} active={isActive}>
+    <AccordionItemWrapper id={`channel${index}`} isActive={isActive}>
       <ChannelSettingsLabel>
-        <button className="channelButton" onClick={() => setActiveTab(index)}>
-          {channelName}
-        </button>
+        <AccordionChannelButton onClick={() => setActiveTab(index)}>
+          <AccordionChannelName isActive={isActive}>
+            {channelName}
+          </AccordionChannelName>
+        </AccordionChannelButton>
         <SVGButton onClick={() => handleDeleteChannel(channelName)}>
           <CloseIcon />
         </SVGButton>
       </ChannelSettingsLabel>
-      <div className="inner">
-        <div className="content">
+      <AccordionSettingsWrapper isActive={isActive}>
+        <AccordionSettingsContent isActive={isActive}>
           <div style={{ marginTop: '-0.2em', color: '#c9c9c9' }}>Volume:</div>
           <VolumeSlider
             type="range"
@@ -60,8 +66,8 @@ const AccordionItem = ({
               onChange={handleChange}
             />
           </VolumeNumberWrapper>
-        </div>
-      </div>
+        </AccordionSettingsContent>
+      </AccordionSettingsWrapper>
     </AccordionItemWrapper>
   );
 };

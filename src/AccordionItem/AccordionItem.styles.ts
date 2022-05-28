@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-const AccordionItemWrapper = styled.div`
+interface AccordionItemProps {
+  isActive?: boolean;
+}
+
+export const AccordionItemWrapper = styled.div<AccordionItemProps>`
   position: relative;
   background-color: #292929;
 
@@ -8,44 +12,8 @@ const AccordionItemWrapper = styled.div`
     margin-bottom: 4px;
   }
 
-  .channelButton {
-    width: 100%;
-    display: block;
-    min-height: 100%;
-    font-weight: 500;
-    font-size: 18px;
-    text-align: center;
-    cursor: pointer;
-    background: none;
-    border: none;
-    outline: none;
-    padding: 0;
-    transition-duration: 0.3s;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    color: ${(props) => (props.active ? '#c9c9c9' : '#696969')};
-  }
-
-  .inner {
-    background-color: #393939;
-    overflow: hidden;
-    transition-duration: 0.3s;
-    height: ${(props) => (props.active ? '70px' : '0px')};
-  }
-
-  .content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 20px;
-    transition-duration: 0.3s;
-    opacity: ${(props) => (props.active ? '1' : '0')};
-  }
-
   &.addAnimation {
-    animation: addItem 0.5s;
+    animation: addItem 0.3s;
   }
 
   &.cancelAddingAnimation {
@@ -98,10 +66,54 @@ const AccordionItemWrapper = styled.div`
       opacity: 0;
       transform: rotateY(-90deg) scaleY(0);
     }
-  } ;
+  }
 `;
 
-const ChannelSettingsLabel = styled.div`
+export const AccordionChannelButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition-duration: 0.3s;
+`;
+
+export const AccordionChannelName = styled.span<AccordionItemProps>`
+  margin: 0 8px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: ${({ isActive }) => (isActive ? '#c9c9c9' : '#696969')};
+`;
+
+export const AccordionSettingsWrapper = styled.div<AccordionItemProps>`
+  background-color: #393939;
+  overflow: hidden;
+  transition-duration: 0.3s;
+  height: ${({ isActive }) => (isActive ? '70px' : '0px')};
+`;
+
+export const AccordionSettingsContent = styled.div<AccordionItemProps>`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 20px;
+  transition-duration: 0.3s;
+  opacity: ${({ isActive }) => (isActive ? '1' : '0')};
+`;
+
+export const ChannelSettingsLabel = styled.div`
   width: 100%;
   height: 70px;
   display: flex;
@@ -110,7 +122,7 @@ const ChannelSettingsLabel = styled.div`
   align-items: center;
 `;
 
-const ChannelNameInputWrapper = styled.div`
+export const ChannelNameInputWrapper = styled.div<{ hasFailed?: boolean }>`
   margin: auto;
   width: 70%;
   display: flex;
@@ -126,15 +138,19 @@ const ChannelNameInputWrapper = styled.div`
     background: none;
     outline: none;
     border: none;
-    border-bottom: ${(props) =>
-      props.hasFailed ? '1px dashed #cf3333' : '1px dashed #c9c9c9'};
+    border-bottom: ${({ hasFailed }) =>
+      hasFailed ? '1px dashed #cf3333' : '1px dashed #c9c9c9'};
   }
 `;
 
-const VolumeNumberWrapper = styled.div`
+interface VolumeProps {
+  useSecondaryStyle?: boolean;
+}
+
+export const VolumeNumberWrapper = styled.div<VolumeProps>`
   position: relative;
   display: inline-block;
-  width: ${(props) => (props.addingNew ? '35%' : '15%')};
+  width: ${({ useSecondaryStyle }) => (useSecondaryStyle ? '35%' : '15%')};
   margin-top: -0.2em;
 
   input[type='string'] {
@@ -161,20 +177,24 @@ const VolumeNumberWrapper = styled.div`
   }
 `;
 
-const VolumeSlider = styled.input`
-  width: ${(props) => (props.addingNew ? '80%' : '60%')};
+interface SliderProps extends VolumeProps {
+  value: string | number;
+}
+
+export const VolumeSlider = styled.input<SliderProps>`
+  width: ${({ useSecondaryStyle }) => (useSecondaryStyle ? '80%' : '60%')};
   height: 15px;
   border-radius: 5px;
   -webkit-appearance: none;
   outline: none;
-  background: ${(props) =>
-    props.value > 50
-      ? `linear-gradient(to right, #517edb ${props.value}%, #c9c9c9 ${
-          100 - props.value
+  background: ${({ value }) =>
+    value > 50
+      ? `linear-gradient(to right, #517edb ${value}%, #c9c9c9 ${
+          100 - Number(value)
         }%)`
-      : `linear-gradient(to left, #c9c9c9 ${100 - props.value}%, #517edb ${
-          props.value
-        }%)`};
+      : `linear-gradient(to left, #c9c9c9 ${
+          100 - Number(value)
+        }%, #517edb ${value}%)`};
 
   &::-webkit-slider-thumb {
     width: 25px;
@@ -192,17 +212,8 @@ const VolumeSlider = styled.input`
   }
 `;
 
-const ErrorMessageDisplayer = styled.i`
+export const ErrorMessageDisplayer = styled.i`
   font-weight: 100;
   font-size: 13px;
   color: #cf3333;
 `;
-
-export {
-  AccordionItemWrapper,
-  ChannelSettingsLabel,
-  ChannelNameInputWrapper,
-  VolumeNumberWrapper,
-  VolumeSlider,
-  ErrorMessageDisplayer,
-};

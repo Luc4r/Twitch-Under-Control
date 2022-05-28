@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TopBarWrapper } from './TopBar.styles';
 
 const TopBar = () => {
