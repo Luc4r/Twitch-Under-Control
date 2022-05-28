@@ -1,6 +1,4 @@
-import { storage } from '@extend-chrome/storage';
-
-const storageSystem = storage.sync || chrome.storage.sync || localStorage;
+const storageSystem = chrome.storage.sync || localStorage;
 
 const saveToChrome = (key: string, value: any) => {
   try {

@@ -1,57 +1,96 @@
 // Array with default pages on twtich (without video player)
-const defaultPaths = ["", "directory", "p"];
+const DEFAULT_PATHS = ['', 'directory', 'p'];
+const ADDON_SOUND_SETTINGS_KEY = 'soundSettings';
+const RETRY_TIME_MS = 500;
+const MAX_RETRY_COUNT = 5;
+let retryCount = 0;
 
-window.addEventListener("load", function() {
-	const path = window.location.pathname.slice(1).toLowerCase();
-	// For now this app works only for channel pages (/example).
-	// This conditional prevents it from trying to modify the video player settings 
-	// on different pages with expanded paths (/example/videos/128256512).
-	if (path.indexOf('/') !== -1 || defaultPaths.includes(path)) {
-		return;
-	}
+const changeVolumeIfSettingsExist = (path) => {
+  const playerElements = document.body.querySelectorAll('video');
+  const volumeSliderElements = document.body.querySelectorAll(
+    'input[type="range"]',
+  );
+  const volumeSliderFillElements = document.body.querySelectorAll(
+    '.tw-range__fill-value',
+  );
 
-	changeVolumeIfSettingsExist(path);
-}, { once: true });
+  if (playerElements?.length === 0 || volumeSliderElements?.length === 0) {
+    // path is correct, video player hasn't loaded yet
+    if (retryCount < MAX_RETRY_COUNT) {
+      setTimeout(() => changeVolumeIfSettingsExist(path), RETRY_TIME_MS);
+      retryCount += 1;
+    } else {
+      retryCount = 0;
+    }
+    return;
+  }
 
-chrome.runtime.onMessage.addListener(path => {
-	// For now this app works only for channel pages (/example).
-	// This conditional prevents it from trying to modify the video player settings 
-	// on different pages with expanded paths (/example/videos/128256512).
-	if (path.indexOf('/') !== -1 || defaultPaths.includes(path)) {
-		return;
-	}
+  chrome.storage.sync.get(ADDON_SOUND_SETTINGS_KEY, (result) => {
+    const soundSettings = result && result[ADDON_SOUND_SETTINGS_KEY];
+    retryCount = 0;
 
-	changeVolumeIfSettingsExist(path);
-});
+    if (!soundSettings) {
+      console.error('No settings found...');
+      return;
+    } else if (!soundSettings[path]) {
+      console.error(`No settings found for channel ${path}`);
+      return;
+    }
+    // Volume values
+    const volumePercentage = `${soundSettings[path]}%`;
+    const volumeFloat = parseFloat(volumePercentage) / 100;
+    const volumeString = volumeFloat.toString();
+    // Update volume multiple times due to aggresive data fetching and caching
+    const updateVolumeInterval = window.setInterval(() => {
+      // Change localStorage volume value
+      localStorage.setItem('volume', volumeString);
+      // Change player volume
+      playerElements.forEach((playerElement) => {
+        playerElement.volume = volumeFloat;
+      });
+      // Update volume slider style
+      volumeSliderElements.forEach((volumeSliderElement) => {
+        volumeSliderElement.value = volumeString;
+      });
+      if (volumeSliderFillElements?.length > 0) {
+        volumeSliderFillElements.forEach((volumeSliderFillElement) => {
+          volumeSliderFillElement.style.width = volumePercentage;
+        });
+      }
 
-const changeVolumeIfSettingsExist = (path) => { 
-	const player = document.body.querySelector(".video-player video");
-	const volumeSlider = document.body.querySelector(".tw-range");
-	const volumeSliderFill = document.body.querySelector(".tw-range__fill-value");
-	if (!player || !volumeSlider || !volumeSliderFill) {
-		// path is correct, video player hasn't loaded yet
-		setTimeout(() => changeVolumeIfSettingsExist(path), 800);
-		return;
-	}
-
-	const key = "soundSettings";
-	chrome.storage.sync.get(key, (result) => {
-		const soundSettings = result && result[key];
-		if (!soundSettings) {
-			console.error("No settings found...");
-			return;
-		} else if (!soundSettings[path]) {
-			console.error(`No settings found for channel ${path}`);
-			return;
-		}
-		// Volume values
-		const volumePercentage = `${soundSettings[path]}%`;
-		const volumeFloat = parseFloat(volumePercentage) / 100;
-		const volumeString = volumeFloat.toString();
-		// Change volume
-		player.volume = volumeFloat;
-		// Update volume slider style
-		volumeSlider.value = volumeString;
-		volumeSliderFill.style.width = volumePercentage;
+      if (retryCount >= MAX_RETRY_COUNT) {
+        clearInterval(updateVolumeInterval);
+      }
+      retryCount += 1;
+    }, RETRY_TIME_MS);
   });
 };
+
+window.addEventListener(
+  'load',
+  () => {
+    const path = window.location.pathname.slice(1).toLowerCase();
+    console.log({ path });
+    // For now this app works only for channel pages (/example).
+    // This conditional prevents it from trying to modify the video player settings
+    // on different pages with expanded paths (/example/videos/128256512).
+    if (path.indexOf('/') !== -1 || DEFAULT_PATHS.includes(path)) {
+      return;
+    }
+
+    changeVolumeIfSettingsExist(path);
+  },
+  { once: true },
+);
+
+chrome.runtime.onMessage.addListener((path) => {
+  // For now this app works only for channel pages (/example).
+  // This conditional prevents it from trying to modify the video player settings
+  // on different pages with expanded paths (/example/videos/128256512).
+  console.log(path);
+  if (path.indexOf('/') !== -1 || DEFAULT_PATHS.includes(path)) {
+    return;
+  }
+
+  changeVolumeIfSettingsExist(path);
+});
